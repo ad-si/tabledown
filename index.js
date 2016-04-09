@@ -113,8 +113,26 @@ export default class Tabledown {
 		tableString += paddedHeaderFields.join(tableDataSeparator)
 		tableString += '\n'
 		tableString += paddedHeaderFields
-			.map(field => '-'.repeat(field.length))
-			.join('-' + styles[this._style].columnSeparator + '-')
+			.map((paddedField, index) => {
+				const field = paddedField.trim()
+				const alignment = this._alignments[field]
+				let numberOfHyphens = paddedField.length + 2
+
+				if (index === 0 || index === paddedHeaderFields.length - 1){
+					numberOfHyphens--
+				}
+
+				let verticalSeparator = '-'.repeat(numberOfHyphens)
+
+				if (alignment === 'left' || alignment === 'center') {
+					verticalSeparator = verticalSeparator.replace('-', ':')
+				}
+				if (alignment === 'right' || alignment === 'center') {
+					verticalSeparator = verticalSeparator.replace(/-$/, ':')
+				}
+				return verticalSeparator
+			})
+			.join(styles[this._style].columnSeparator)
 		tableString += '\n'
 		tableString += this._data
 			.map(entry => this._headerFields

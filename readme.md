@@ -76,9 +76,9 @@ yields
 ```md
 Table: Food
 name     |  color | price | quantity
----------|--------|-------|---------
-banana   | yellow | 3.23  |    2
-tomato   |    red | 2.67  |    6
-cucumber |  green | 5.82  |    4
-carrot   | orange | 3     |    9
+:--------|-------:|-------|:-------:
+banana   | yellow | 3.23  |    2    
+tomato   |    red | 2.67  |    6    
+cucumber |  green | 5.82  |    4    
+carrot   | orange | 3     |    9    
 ```
