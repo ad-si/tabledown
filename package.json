@@ -2,10 +2,11 @@
   "name": "tabledown",
   "version": "0.1.0",
   "description": "Easily create markdown tables in your Javascript applications",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "test": "babel-node --presets es2015 test.js",
-    "prepublish": "npm test"
+    "build": "babel --presets es2015 --out-dir build source",
+    "prepublish": "npm test && npm run build"
   },
   "keywords": [
     "table",
