@@ -1,6 +1,6 @@
 {
   "name": "tabledown",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Easily create markdown tables in your Javascript applications",
   "main": "index.js",
   "scripts": {
