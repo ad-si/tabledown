@@ -62,11 +62,23 @@ const table = new Tabledown({
 		name: 'left',
 		color: 'right',
 		price: 'decimal mark',
-		quantity: 'right',
+		quantity: 'center',
 	},
 	style: 'pipe', // other options: simple, multiline, grid,
 	capitalizeHeader: true,
 })
 
 console.log(table.toString())
+```
+
+yields
+
+```md
+Table: Food
+name     |  color | price | quantity
+---------|--------|-------|---------
+banana   | yellow | 3.23  |    2
+tomato   |    red | 2.67  |    6
+cucumber |  green | 5.82  |    4
+carrot   | orange | 3     |    9
 ```

@@ -17,6 +17,28 @@ function createHeaderFields (data) {
 	)
 }
 
+function padString (string, length, alignment) {
+	string = String(string)
+
+	const padding = ' '.repeat(length - string.length)
+
+	if (alignment === 'left') {
+		return string + padding
+	}
+	if (alignment === 'right') {
+		return padding + string
+	}
+	if (alignment === 'center') {
+		const paddingStart = ' '.repeat(padding.length / 2)
+		const paddingEnd = ' '
+			.repeat(padding.length - paddingStart.length)
+		return paddingStart + string + paddingEnd
+	}
+
+	// Default is left aligned
+	return string + padding
+}
+
 export default class Tabledown {
 	constructor (
 		{
@@ -65,9 +87,11 @@ export default class Tabledown {
 		}
 
 		const paddedHeaderFields = this._headerFields.map(field => {
-			const padding = ' '
-				.repeat(this._maxFieldLengths[field] - String(field).length)
-			return field + padding
+			return padString (
+				field,
+				this._maxFieldLengths[field],
+				this._alignments[field]
+			)
 		})
 		const tableDataSeparator = ' ' +
 			styles[this._style].columnSeparator +
@@ -75,11 +99,13 @@ export default class Tabledown {
 
 		this._data = this._data.map(task => {
 			this._headerFields.forEach((field, index) => {
-				if (task.hasOwnProperty(field)) {
-					let fieldLength = String(task[field]).length
-					task[field] += ' '
-						.repeat(this._maxFieldLengths[field] - fieldLength)
-				}
+				if (!task.hasOwnProperty(field)) { return }
+
+				task[field] = padString(
+					task[field],
+					this._maxFieldLengths[field],
+					this._alignments[field]
+				)
 			})
 			return task
 		})

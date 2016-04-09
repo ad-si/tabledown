@@ -34,7 +34,7 @@ const table = new Tabledown({
 		name: 'left',
 		color: 'right',
 		price: 'decimal mark',
-		quantity: 'right',
+		quantity: 'center',
 	},
 	style: 'pipe',
 	capitalizeHeader: true,
