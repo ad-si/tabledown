@@ -4,7 +4,8 @@
   "description": "Easily create markdown tables in your Javascript applications",
   "main": "index.js",
   "scripts": {
-    "test": "babel-node --presets es2015 test.js"
+    "test": "babel-node --presets es2015 test.js",
+    "prepublish": "npm test"
   },
   "keywords": [
     "table",
