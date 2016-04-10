@@ -17,8 +17,12 @@ function createHeaderFields (data) {
 	)
 }
 
-function padString (string, length, alignment) {
+function padString (string, length, alignment, capitalize) {
 	string = String(string)
+
+	if (capitalize) {
+		string = string.slice(0, 1).toUpperCase() + string.slice(1)
+	}
 
 	const padding = ' '.repeat(length - string.length)
 
@@ -42,40 +46,69 @@ function padString (string, length, alignment) {
 export default class Tabledown {
 	constructor (
 		{
+			caption,
 			data = [],
 			style = 'pipe',
-			caption,
 			alignments = {},
+			capitalizeHeaders = false,
 		} = {}
 	) {
-		this._headerFields = createHeaderFields(data)
+		if (!Array.isArray(data) || !data.length) {
+			throw new Error('Data must be an array or object and not ' + data)
+		}
+
+		if (Array.isArray(data[0])) {
+			this._headerFields = data[0]
+			data = data
+				.slice(1)
+				.map(row => row.reduce(
+					returnObject => {
+						this._headerFields.forEach((field, fieldIndex) => {
+							returnObject[field] = row[fieldIndex]
+						})
+						return returnObject
+					},
+					{}
+				))
+		}
+		else if (typeof data[0] === 'object') {
+			this._headerFields = createHeaderFields(data)
+		}
+
+		this._headerFieldLengths = this._headerFields.reduce(
+			(headerFieldLengths, field) => {
+				headerFieldLengths[field] = String(field).length
+				return headerFieldLengths
+			},
+			{}
+		)
+
 		this._maxFieldLengths = data.reduce(
 			(maxFieldLengths, task) => {
 				this._headerFields.forEach(field => {
-					if (task.hasOwnProperty(field)) {
-						let fieldLength = String(task[field]).length
+					if (!task.hasOwnProperty(field)) {
+						return
+					}
 
-						if (!maxFieldLengths[field])
-							maxFieldLengths[field] = 0
+					let fieldLength = String(task[field]).length
 
-						if (fieldLength > maxFieldLengths[field]) {
-							maxFieldLengths[field] = fieldLength
-						}
+					if (!maxFieldLengths[field]) {
+						maxFieldLengths[field] = 0
+					}
+
+					if (fieldLength > maxFieldLengths[field]) {
+						maxFieldLengths[field] = fieldLength
 					}
 				})
 				return maxFieldLengths
 			},
-			this._headerFields.reduce(
-				(headerFieldLength, field) => {
-					headerFieldLength[field] = String(field).length
-					return headerFieldLength
-				},
-				{}
-			)
+			this._headerFieldLengths
 		)
+
 		this._data = data
 		this._style = style
 		this._alignments = alignments
+		this._capitalizeHeaders = capitalizeHeaders
 		this.caption = caption
 	}
 
@@ -90,13 +123,15 @@ export default class Tabledown {
 			return padString (
 				field,
 				this._maxFieldLengths[field],
-				this._alignments[field]
+				this._alignments[field],
+				this._capitalizeHeaders
 			)
 		})
 		const tableDataSeparator = ' ' +
 			styles[this._style].columnSeparator +
 			' '
 
+		// Pad table body content
 		this._data = this._data.map(task => {
 			this._headerFields.forEach((field, index) => {
 				if (!task.hasOwnProperty(field)) { return }
@@ -110,15 +145,18 @@ export default class Tabledown {
 			return task
 		})
 
-		tableString += paddedHeaderFields.join(tableDataSeparator)
+		// Table head
+		tableString += paddedHeaderFields.join(tableDataSeparator).trim()
 		tableString += '\n'
+
+		// Separation line
 		tableString += paddedHeaderFields
 			.map((paddedField, index) => {
-				const field = paddedField.trim()
+				const field = this._headerFields[index]
 				const alignment = this._alignments[field]
 				let numberOfHyphens = paddedField.length + 2
 
-				if (index === 0 || index === paddedHeaderFields.length - 1){
+				if (index === 0 || index === paddedHeaderFields.length - 1) {
 					numberOfHyphens--
 				}
 
@@ -134,14 +172,17 @@ export default class Tabledown {
 			})
 			.join(styles[this._style].columnSeparator)
 		tableString += '\n'
+
+		// Table body
 		tableString += this._data
 			.map(entry => this._headerFields
 				.map(field => entry[field])
 				.join(' ' + styles[this._style].columnSeparator + ' ')
+				.trim()
 			)
 			.join('\n')
 
-		return tableString
+		return tableString + '\n'
 	}
 
 	toString () { return this.string }

@@ -15,6 +15,7 @@ Easily create markdown tables in your Javascript applications.
 	- Pipe tables
 - Configuration options
 	- Alignment
+- Optional caption
 
 
 ## Installation
@@ -65,7 +66,7 @@ const table = new Tabledown({
 		quantity: 'center',
 	},
 	style: 'pipe', // other options: simple, multiline, grid,
-	capitalizeHeader: true,
+	capitalizeHeaders: true,
 })
 
 console.log(table.toString())
@@ -75,10 +76,25 @@ yields
 
 ```md
 Table: Food
-name     |  color | price | quantity
+Name     |  Color | Price | Quantity
 :--------|-------:|-------|:-------:
 banana   | yellow | 3.23  |    2    
 tomato   |    red | 2.67  |    6    
 cucumber |  green | 5.82  |    4    
 carrot   | orange | 3     |    9    
+```
+
+The data can also be provided as an array.
+The first row must be the headers.
+
+```js
+const food = [
+	['name',     'color', 'price', 'quantity'],
+	['banana',   'yellow',  3.23,      2     ],
+	['tomato',   'red',     2.5 ,      6     ],
+	['cucumber', 'green',   5.82,      4     ],
+	['carrot',   'orange', 12,         9     ],
+]
+
+const table = new Tabledown({data: food})
 ```
