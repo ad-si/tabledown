@@ -146,7 +146,9 @@ export default class Tabledown {
 		})
 
 		// Table head
-		tableString += paddedHeaderFields.join(tableDataSeparator).trim()
+		tableString += paddedHeaderFields
+			.join(tableDataSeparator)
+			.replace(/\s+$/, '')
 		tableString += '\n'
 
 		// Separation line
@@ -178,7 +180,7 @@ export default class Tabledown {
 			.map(entry => this._headerFields
 				.map(field => entry[field])
 				.join(' ' + styles[this._style].columnSeparator + ' ')
-				.trim()
+				.replace(/\s+$/, '')
 			)
 			.join('\n')
 
