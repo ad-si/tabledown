@@ -116,7 +116,7 @@ export default class Tabledown {
 		let tableString = ''
 
 		if (this.caption) {
-			tableString += `Table: ${this.caption}\n`
+			tableString += `Table: ${this.caption}\n\n`
 		}
 
 		const paddedHeaderFields = this._headerFields.map(field => {

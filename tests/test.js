@@ -48,6 +48,7 @@ const foodArrays = [
 
 const expectedTable =
 `Table: Food
+
 name     |  color | price | quantity
 :--------|-------:|-------|:-------:
 banana   | yellow | 3.23  |    2
