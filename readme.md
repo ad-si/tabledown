@@ -78,14 +78,14 @@ yields
 Table: Food
 Name     |  Color | Price | Quantity
 :--------|-------:|-------|:-------:
-banana   | yellow | 3.23  |    2    
-tomato   |    red | 2.67  |    6    
-cucumber |  green | 5.82  |    4    
-carrot   | orange | 3     |    9    
+banana   | yellow | 3.23  |    2
+tomato   |    red | 2.67  |    6
+cucumber |  green | 5.82  |    4
+carrot   | orange | 3     |    9
 ```
 
 The data can also be provided as an array.
-The first row must be the headers.
+The first sub-array must contain the headers.
 
 ```js
 const food = [

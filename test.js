@@ -1,4 +1,4 @@
-import Tabledown from './index'
+import Tabledown from './source/index'
 
 const testConfig = {
 	caption: 'Food',
