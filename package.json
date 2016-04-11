@@ -1,6 +1,6 @@
 {
   "name": "tabledown",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Easily create markdown tables in your Javascript applications",
   "main": "build/index.js",
   "bin": "cli/cli.js",
