@@ -3,8 +3,11 @@
   "version": "0.2.2",
   "description": "Easily create markdown tables in your Javascript applications",
   "main": "build/index.js",
+  "bin": "cli/cli.js",
   "scripts": {
-    "test": "babel-node --presets es2015 tests/test.js",
+    "testCore": "babel-node --presets es2015 tests/core.js",
+    "testCli": "npm run build && babel-node --presets es2015 tests/cli.js",
+    "test": "npm run testCore && npm run testCli",
     "build": "babel --presets es2015 --out-dir build source",
     "prepublish": "npm test && npm run build"
   },

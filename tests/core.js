@@ -134,4 +134,4 @@ carrot    |    orange | 12                |      9
 	)
 }
 
-console.log('All tests passed ✔')
+console.log('Core tests passed ✔')

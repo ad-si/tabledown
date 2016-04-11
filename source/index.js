@@ -18,7 +18,10 @@ function createHeaderFields (data) {
 }
 
 function padString (string, length, alignment, capitalize) {
-	string = String(string)
+
+	string = (string instanceof Object) ?
+		JSON.stringify(string) :
+		String(string)
 
 	if (capitalize) {
 		string = string.slice(0, 1).toUpperCase() + string.slice(1)
@@ -51,15 +54,16 @@ function getMaximumKeyLength (objects, initialValue) {
 					if (!object.hasOwnProperty(key)) {
 						return
 					}
-
-					let keyLength = String(object[key]).length
+					const keyString = (object[key] instanceof Object) ?
+						JSON.stringify(object[key]) :
+						String(object[key])
 
 					if (!maxKeyLengths[key]) {
 						maxKeyLengths[key] = 0
 					}
 
-					if (keyLength > maxKeyLengths[key]) {
-						maxKeyLengths[key] = keyLength
+					if (keyString.length > maxKeyLengths[key]) {
+						maxKeyLengths[key] = keyString.length
 					}
 				})
 			return maxKeyLengths
