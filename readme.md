@@ -20,14 +20,40 @@ Easily create markdown tables in your Javascript applications.
 
 ## Installation
 
-```shell
+As command line tool:
+
+```sh
+npm install --global tabledown
+```
+
+As module:
+
+```sh
 npm install --save tabledown
 ```
 
 
 ## Usage
 
-### Simple
+### Command Line
+
+```sh
+echo '[{"name": "John", "age": 32}, {"name": "Anna", "age": 27}]' | tabledown
+```
+
+yields
+
+```txt
+name | age
+-----|----
+John | 32
+Anna | 27
+```
+
+
+### Module
+
+#### Simple
 
 ```js
 import Tabledown from 'tabledown'
@@ -53,7 +79,7 @@ console.log(table.toString())
 
 yields
 
-```
+```md
 name   |  color | price | quantity
 -------|--------|-------|---------
 banana | yellow | 3.23  |    2
@@ -61,7 +87,7 @@ tomato |    red | 2.67  |    6
 ```
 
 
-### Extended
+#### Extended
 
 ```js
 import Tabledown from 'tabledown'
