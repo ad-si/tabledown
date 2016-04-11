@@ -43,6 +43,31 @@ function padString (string, length, alignment, capitalize) {
 	return string + padding
 }
 
+function getMaximumKeyLength (objects, initialValue) {
+	return objects.reduce(
+		(maxKeyLengths, object) => {
+			Object.keys(initialValue)
+				.forEach(key => {
+					if (!object.hasOwnProperty(key)) {
+						return
+					}
+
+					let keyLength = String(object[key]).length
+
+					if (!maxKeyLengths[key]) {
+						maxKeyLengths[key] = 0
+					}
+
+					if (keyLength > maxKeyLengths[key]) {
+						maxKeyLengths[key] = keyLength
+					}
+				})
+			return maxKeyLengths
+		},
+		initialValue
+	)
+}
+
 export default class Tabledown {
 	constructor (
 		{
@@ -51,6 +76,7 @@ export default class Tabledown {
 			style = 'pipe',
 			alignments = {},
 			capitalizeHeaders = false,
+			headerTexts
 		} = {}
 	) {
 		if (!Array.isArray(data) || !data.length) {
@@ -75,35 +101,35 @@ export default class Tabledown {
 			this._headerFields = createHeaderFields(data)
 		}
 
-		this._headerFieldLengths = this._headerFields.reduce(
-			(headerFieldLengths, field) => {
-				headerFieldLengths[field] = String(field).length
-				return headerFieldLengths
-			},
-			{}
+		if (headerTexts) {
+			this._customHeaderFields = this._headerFields
+				.map(field => headerTexts[field] || field)
+
+			this._customHeaderFieldLengths = this._customHeaderFields.reduce(
+				(headerFieldLengths, customField, index) => {
+					const field = this._headerFields[index]
+					headerFieldLengths[field] = String(customField).length
+					return headerFieldLengths
+				},
+				{}
+			)
+		}
+		else {
+			this._customHeaderFields = this._headerFields
+			this._customHeaderFieldLengths = this._headerFields.reduce(
+				(customHeaderFieldLengths, field) => {
+					customHeaderFieldLengths[field] = String(field).length
+					return customHeaderFieldLengths
+				},
+				{}
+			)
+		}
+
+		this._maxFieldLengths = getMaximumKeyLength(
+			data,
+			this._customHeaderFieldLengths
 		)
 
-		this._maxFieldLengths = data.reduce(
-			(maxFieldLengths, task) => {
-				this._headerFields.forEach(field => {
-					if (!task.hasOwnProperty(field)) {
-						return
-					}
-
-					let fieldLength = String(task[field]).length
-
-					if (!maxFieldLengths[field]) {
-						maxFieldLengths[field] = 0
-					}
-
-					if (fieldLength > maxFieldLengths[field]) {
-						maxFieldLengths[field] = fieldLength
-					}
-				})
-				return maxFieldLengths
-			},
-			this._headerFieldLengths
-		)
 
 		this._data = data
 		this._style = style
@@ -119,7 +145,7 @@ export default class Tabledown {
 			tableString += `Table: ${this.caption}\n\n`
 		}
 
-		const paddedHeaderFields = this._headerFields.map(field => {
+		const paddedHeaderFields = this._customHeaderFields.map(field => {
 			return padString (
 				field,
 				this._maxFieldLengths[field],

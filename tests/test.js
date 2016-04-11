@@ -57,9 +57,18 @@ cucumber |  green | 5.82  |    4
 carrot   | orange | 12    |    9
 `
 
+const tableWithCustomHeaders =
+`The Fruit | The Color | The Price in Euro | The Quantity
+:---------|----------:|-------------------|:-----------:
+banana    |    yellow | 3.23              |      2
+tomato    |       red | 2.5               |      6
+cucumber  |     green | 5.82              |      4
+carrot    |    orange | 12                |      9
+`
+
 {
 	const expection = 'Creates a table from an array of objects\n\n' +
-		'%s\nto equal\n%s'
+		'Expect\n%s\nto equal\n%s'
 	const config = Object.assign({}, testConfig, {data: foodObjects})
 	const pipeTableFromObjects = new Tabledown(config).toString()
 	console.assert(
@@ -72,7 +81,7 @@ carrot   | orange | 12    |    9
 
 {
 	const expection = 'Creates a table from an array of arrays\n\n' +
-		'%s\nto equal\n%s'
+		'Expect\n%s\nto equal\n%s'
 	const config = Object.assign({}, testConfig, {data: foodArrays})
 	const pipeTableFromArrays = new Tabledown(config).toString()
 	console.assert(
@@ -84,7 +93,8 @@ carrot   | orange | 12    |    9
 }
 
 {
-	const expection = 'Capitalizes the table headers\n\n%s\nto equal\n%s'
+	const expection = 'Capitalizes the table headers\n\n' +
+		'Expect\n%s\nto equal\n%s'
 	const config = Object.assign({}, testConfig, {
 		data: foodObjects,
 		capitalizeHeaders: true,
@@ -99,6 +109,28 @@ carrot   | orange | 12    |    9
 		expection,
 		tableString,
 		capitalizedTable
+	)
+}
+
+{
+	const expection = 'Rename the table headers\n\n' +
+		'Expect\n%s\nto equal\n%s'
+	const config = Object.assign({}, testConfig, {
+		data: foodObjects,
+		caption: null,
+		headerTexts: {
+			name: 'The Fruit',
+			color: 'The Color',
+			price: 'The Price in Euro',
+			quantity: 'The Quantity',
+		},
+	})
+	const tableString = new Tabledown(config).toString()
+	console.assert(
+		tableString === tableWithCustomHeaders,
+		expection,
+		tableString,
+		tableWithCustomHeaders
 	)
 }
 
