@@ -13,8 +13,8 @@ Easily create markdown tables in your Javascript applications.
 	- Multiline tables
 	- Grid tables
 	- Pipe tables
-- Configuration options
-	- Alignment
+- Column alignment
+- Custom headers
 - Optional caption
 
 
@@ -26,6 +26,42 @@ npm install --save tabledown
 
 
 ## Usage
+
+### Simple
+
+```js
+import Tabledown from 'tabledown'
+const food = [
+	{
+		name: 'banana',
+		color: 'yellow',
+		price: 3.23,
+		quantity: 2,
+	},
+	{
+		name: 'tomato',
+		color: 'red',
+		price: 2.67,
+		quantity: 6,
+	}
+]
+
+const table = new Tabledown({data: food})
+
+console.log(table.toString())
+```
+
+yields
+
+```
+name   |  color | price | quantity
+-------|--------|-------|---------
+banana | yellow | 3.23  |    2
+tomato |    red | 2.67  |    6
+```
+
+
+### Extended
 
 ```js
 import Tabledown from 'tabledown'
@@ -62,10 +98,16 @@ const table = new Tabledown({
 	alignments: {
 		name: 'left',
 		color: 'right',
-		price: 'decimal mark',
+		price: 'decimal mark', // Not yet implemented
 		quantity: 'center',
 	},
-	style: 'pipe', // other options: simple, multiline, grid,
+	headerTexts: {
+		name: 'the Fruit',
+		color: 'the Color',
+		price: 'the Price (€)',
+		quantity: 'the Quantity',
+	},
+	style: 'pipe', // or simple, multiline, grid (not yet implemented)
 	capitalizeHeaders: true,
 })
 
@@ -76,12 +118,13 @@ yields
 
 ```md
 Table: Food
-Name     |  Color | Price | Quantity
-:--------|-------:|-------|:-------:
-banana   | yellow | 3.23  |    2
-tomato   |    red | 2.67  |    6
-cucumber |  green | 5.82  |    4
-carrot   | orange | 3     |    9
+
+The Fruit | The Color | The Price (€) | The Quantity
+:---------|----------:|---------------|:-----------:
+banana    |    yellow | 3.23          |      2
+tomato    |       red | 2.5           |      6
+cucumber  |     green | 5.82          |      4
+carrot    |    orange | 12            |      9
 ```
 
 The data can also be provided as an array.
