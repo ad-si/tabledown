@@ -15,9 +15,12 @@ export default function (inputStream, outputStream) {
       },
       flush: function (done) {
         const array = JSON.parse(this.buffer)
-        this.push(new Tabledown({data: array}).toString())
+        this.push(
+          new Tabledown({data: array})
+            .toString()
+        )
         done()
-      }
+      },
     }))
     .pipe(outputStream)
 }

@@ -3,11 +3,14 @@
   "version": "0.3.0",
   "description": "Easily create markdown tables in your Javascript applications",
   "main": "build/index.js",
-  "bin": "cli/cli.js",
+  "bin": {
+    "tabledown": "cli/cli.js"
+  },
   "scripts": {
+    "lint": "eslint --ignore-path .gitignore --max-warnings 0 .",
     "testCore": "babel-node --presets es2015 tests/core.js",
     "testCli": "npm run build && babel-node --presets es2015 tests/cli.js",
-    "test": "npm run testCore && npm run testCli",
+    "test": "npm run lint && npm run testCore && npm run testCli",
     "build": "babel --presets es2015 --out-dir build source",
     "prepublish": "npm test && npm run build"
   },
@@ -17,10 +20,11 @@
   ],
   "author": "Adrian Sieber",
   "license": "ISC",
-  "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.7.5",
-    "babel-preset-es2015": "^6.6.0"
+    "babel-preset-es2015": "^6.6.0",
+    "eslint": "^4.1.1",
+    "eslint-config-javascript": "^1.3.0"
   },
   "repository": {
     "type": "git",
@@ -29,5 +33,11 @@
   "bugs": {
     "url": "https://github.com/adius/tabledown/issues"
   },
-  "homepage": "https://github.com/adius/tabledown#readme"
+  "homepage": "https://github.com/adius/tabledown#readme",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  },
+  "directories": {
+    "test": "tests"
+  }
 }

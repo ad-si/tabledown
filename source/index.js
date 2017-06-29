@@ -19,12 +19,14 @@ function createHeaderFields (data) {
 
 function padString (string, length, alignment, capitalize) {
 
-  string = (string instanceof Object) ?
-    JSON.stringify(string) :
-    String(string)
+  string = string instanceof Object
+    ? JSON.stringify(string)
+    : String(string)
 
   if (capitalize) {
-    string = string.slice(0, 1).toUpperCase() + string.slice(1)
+    string = string
+      .slice(0, 1)
+      .toUpperCase() + string.slice(1)
   }
 
   const padding = ' '.repeat(length - string.length)
@@ -54,9 +56,9 @@ function getMaximumKeyLength (objects, initialValue) {
           if (!object.hasOwnProperty(key)) {
             return
           }
-          const keyString = (object[key] instanceof Object) ?
-            JSON.stringify(object[key]) :
-            String(object[key])
+          const keyString = object[key] instanceof Object
+            ? JSON.stringify(object[key])
+            : String(object[key])
 
           if (!maxKeyLengths[key]) {
             maxKeyLengths[key] = 0
@@ -80,7 +82,7 @@ export default class Tabledown {
       style = 'pipe',
       alignments = {},
       capitalizeHeaders = false,
-      headerTexts
+      headerTexts,
     } = {}
   ) {
     if (!Array.isArray(data) || !data.length) {
@@ -150,7 +152,7 @@ export default class Tabledown {
     }
 
     const paddedHeaderFields = this._customHeaderFields.map(field => {
-      return padString (
+      return padString(
         field,
         this._maxFieldLengths[field],
         this._alignments[field],
@@ -163,8 +165,8 @@ export default class Tabledown {
 
     // Pad table body content
     this._data = this._data.map(task => {
-      this._headerFields.forEach((field, index) => {
-        if (!task.hasOwnProperty(field)) { return }
+      this._headerFields.forEach(field => {
+        if (!task.hasOwnProperty(field)) return
 
         task[field] = padString(
           task[field],
@@ -217,7 +219,11 @@ export default class Tabledown {
     return tableString + '\n'
   }
 
-  toString () { return this.string }
+  toString () {
+    return this.string
+  }
 
-  toJSON () { return this.string }
+  toJSON () {
+    return this.string
+  }
 }

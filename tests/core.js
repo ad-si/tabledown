@@ -1,3 +1,4 @@
+import assert from 'assert'
 import Tabledown from '../source/index'
 
 const testConfig = {
@@ -35,13 +36,13 @@ const foodObjects = [
     color: 'orange',
     price: 12,
     quantity: 9,
-  }
+  },
 ]
 
 const foodArrays = [
   ['name',     'color', 'price', 'quantity'],
   ['banana',   'yellow',  3.23,      2     ],
-  ['tomato',   'red',     2.5 ,      6     ],
+  ['tomato',   'red',     2.5,       6     ],
   ['cucumber', 'green',   5.82,      4     ],
   ['carrot',   'orange', 12,         9     ],
 ]
@@ -70,8 +71,9 @@ carrot    |    orange | 12                |      9
   const expection = 'Creates a table from an array of objects\n\n' +
     'Expect\n%s\nto equal\n%s'
   const config = Object.assign({}, testConfig, {data: foodObjects})
-  const pipeTableFromObjects = new Tabledown(config).toString()
-  console.assert(
+  const pipeTableFromObjects = new Tabledown(config)
+    .toString()
+  assert(
     pipeTableFromObjects === expectedTable,
     expection,
     pipeTableFromObjects,
@@ -83,8 +85,9 @@ carrot    |    orange | 12                |      9
   const expection = 'Creates a table from an array of arrays\n\n' +
     'Expect\n%s\nto equal\n%s'
   const config = Object.assign({}, testConfig, {data: foodArrays})
-  const pipeTableFromArrays = new Tabledown(config).toString()
-  console.assert(
+  const pipeTableFromArrays = new Tabledown(config)
+    .toString()
+  assert(
     pipeTableFromArrays === expectedTable,
     expection,
     pipeTableFromArrays,
@@ -99,12 +102,13 @@ carrot    |    orange | 12                |      9
     data: foodObjects,
     capitalizeHeaders: true,
   })
-  const tableString = new Tabledown(config).toString()
+  const tableString = new Tabledown(config)
+    .toString()
   const capitalizedTable = expectedTable.replace(
     'name     |  color | price | quantity',
     'Name     |  Color | Price | Quantity'
   )
-  console.assert(
+  assert(
     tableString === capitalizedTable,
     expection,
     tableString,
@@ -125,8 +129,9 @@ carrot    |    orange | 12                |      9
       quantity: 'The Quantity',
     },
   })
-  const tableString = new Tabledown(config).toString()
-  console.assert(
+  const tableString = new Tabledown(config)
+    .toString()
+  assert(
     tableString === tableWithCustomHeaders,
     expection,
     tableString,
@@ -134,4 +139,4 @@ carrot    |    orange | 12                |      9
   )
 }
 
-console.log('Core tests passed ✔')
+console.info('Core tests passed ✔')
